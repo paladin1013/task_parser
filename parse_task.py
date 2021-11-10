@@ -11,15 +11,15 @@ import streamlit as st
 DEBUG = "print_add"  # add_
 
 
-
 def get_args():
     parser = argparse.ArgumentParser(description='Parse task')
     parser.add_argument('-t', '--todo', type=str, required=False, default="", help='Task to parse')
-    parser.add_argument('--no_print', default=False, action = "store_true", help='Task to parse')
-    parser.add_argument('--no_add', default=False, action = "store_true", help='Task to parse')
+    parser.add_argument('--no_print', default=False, action="store_true", help='Task to parse')
+    parser.add_argument('--no_add', default=False, action="store_true", help='Task to parse')
     parser.add_argument('--db_id', default="c7eea165996341eebdfc8ac212018abc")
     parser.add_argument('--integration_token', default="secret_wiobUVYcEFjBdmWlL3WhGTvOYp2d99h8ztI5kRuCmmt")
     return parser.parse_args()
+
 
 def insert_page_to_notion(todo, status, start_time, end_time, args):
     # 添加页
@@ -65,6 +65,8 @@ def next_weekday(day: datetime.date, weekday):
     if days_ahead <= 0:  # Target day already happened this week
         days_ahead += 7
     return day + datetime.timedelta(days_ahead)
+
+
 def parse_date(todo, args):
     date = None
     today = datetime.date.today()
@@ -103,14 +105,14 @@ def parse_date(todo, args):
                 year = int(date_obj.group(2))
         else:
             year = today.year
-        
+
         if date_obj.group(4) is not None:
             month = today.month + 1
         elif date_obj.group(5) is not None:
             month = today.month
         else:
             month = int(date_obj.group(3))
-        
+
         if date_obj.group(7) is not None:
             day = int(date_obj.group(7))
         else:
@@ -158,7 +160,7 @@ def parse_time(todo, args):
     elif re.search(r"晚上", todo):
         time = datetime.time(19, 0)
         todo = re.sub(r"晚上", "", todo)
-    
+
     if not args.no_print:
         print(f"time: {time}, todo: {todo}")
         st.write(f"time: {time}, todo: {todo}")
@@ -230,16 +232,16 @@ def parse_task(todo, args):
 if __name__ == '__main__':
     # todo = sys.argv[1]
     args = get_args()
-    args.no_print = not st.sidebar.checkbox("打印输出", True)
-    args.no_add = not st.sidebar.checkbox("添加到待办", True)
-    new_db_id = st.sidebar.text_input("Database ID", "")
-    if new_db_id != "":
-        args.db_id = new_db_id
-    new_integration_token = st.sidebar.text_input("Integration Token", "")
-    if new_integration_token != "":
-        args.integration_token = new_integration_token
+    # args.no_print = not st.sidebar.checkbox("打印输出", True)
+    # args.no_add = not st.sidebar.checkbox("添加到待办", True)
+    # new_db_id = st.sidebar.text_input("Database ID", "")
+    # if new_db_id != "":
+    #     args.db_id = new_db_id
+    # new_integration_token = st.sidebar.text_input("Integration Token", "")
+    # if new_integration_token != "":
+    #     args.integration_token = new_integration_token
     if args.todo == "":
-        todo = st.text_input("", value = "")
+        todo = st.text_input("", value="")
     else:
         todo = args.todo
     # do_parse = st.button("解析")
